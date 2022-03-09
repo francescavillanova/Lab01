@@ -16,6 +16,9 @@ public class FXMLController {
 
     @FXML
     private ResourceBundle resources;
+    
+    @FXML 
+    private TextArea txtTempi; 
 
     @FXML
     private URL location;
@@ -34,14 +37,36 @@ public class FXMLController {
 
     @FXML
     void doInsert(ActionEvent event) {
-    	// TODO
+    	double start=System.nanoTime();    
+    	elenco.addParola(txtParola.getText());
+    	txtResult.setText(elenco.getElenco().toString());  //nel setText posso mettere solo stringhe
+    	txtParola.clear();
+    	double end=System.nanoTime();
+    	txtTempi.setText(""+(end-start)/1e9);
     }
 
     @FXML
     void doReset(ActionEvent event) {
-    	// TODO
+    	double start=System.nanoTime();   //System.nanoTime dice il tempo corrente 
+    	elenco.reset();
+    	txtResult.clear();
+    	txtParola.clear();
+    	double end=System.nanoTime();
+    	txtTempi.setText(""+(end-start)/1e9);   //tempo che ci ha messo a fare l'operazione (nanosecondi/1e9=secondi)
     }
 
+
+    @FXML
+    void doCancella(ActionEvent event) {
+    	double start=System.nanoTime();   
+    	elenco.deleteParola(txtParola.getText());
+    	txtParola.clear();
+    	txtResult.setText(elenco.getElenco().toString());
+    	double end=System.nanoTime();
+    	txtTempi.setText(""+(end-start)/1e9); 
+    }
+    
+    
     @FXML
     void initialize() {
         assert txtParola != null : "fx:id=\"txtParola\" was not injected: check your FXML file 'Scene.fxml'.";
@@ -52,3 +77,5 @@ public class FXMLController {
         elenco = new Parole() ;
     }
 }
+
+//L'arrayList è più lenta rispetto alla LinkedList che quindi è più conveniente
